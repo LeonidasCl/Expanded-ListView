@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">expanded-list-view</string>
+    <string name="title">标题</string>
+    <string name="subtitle">副标题</string>
+    <string name="content">内容</string>
+    <string name="listhint">expandlistview</string>
+    <string name="lastfreshtime">最后刷新时间: YYYY-MM-DD HH:MM:SS</string>
+    <string name="pulltofresh">下拉刷新</string>
+</resources>
