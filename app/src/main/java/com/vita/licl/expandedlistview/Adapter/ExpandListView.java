@@ -45,6 +45,7 @@ public class ExpandListView extends ListView implements AbsListView.OnScrollList
     private View footerView; // 脚布局的对象
     private int footerViewHeight; // 脚布局的高度
     private boolean isLoadingMore = false; // 是否正在加载更多中
+    private boolean onScroll=false;
 
     public ExpandListView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -202,8 +203,11 @@ public class ExpandListView extends ListView implements AbsListView.OnScrollList
     @Override
     public void onScrollStateChanged(AbsListView view, int scrollState) {
 
-        if (scrollState == SCROLL_STATE_IDLE
-                || scrollState == SCROLL_STATE_FLING) {
+        if (scrollState == SCROLL_STATE_IDLE || scrollState == SCROLL_STATE_FLING||scrollState==SCROLL_STATE_TOUCH_SCROLL) {
+            if (scrollState ==SCROLL_STATE_IDLE)
+                setOnScroll(true);
+            if(scrollState ==SCROLL_STATE_FLING||(scrollState==SCROLL_STATE_TOUCH_SCROLL))
+                setOnScroll(false);
             // 判断当前是否已经到了底部
             if (isScrollToBottom && !isLoadingMore) {
                 isLoadingMore = true;
@@ -233,7 +237,6 @@ public class ExpandListView extends ListView implements AbsListView.OnScrollList
     public void onScroll(AbsListView view, int firstVisibleItem,
                          int visibleItemCount, int totalItemCount) {
         firstVisibleItemPosition = firstVisibleItem;
-
         if (getLastVisiblePosition() == (totalItemCount - 1)) {
             isScrollToBottom = true;
         } else {
@@ -268,5 +271,13 @@ public class ExpandListView extends ListView implements AbsListView.OnScrollList
     public void hideFooterView() {
         footerView.setPadding(0, -footerViewHeight, 0, 0);
         isLoadingMore = false;
+    }
+
+    public boolean isOnScroll() {
+        return onScroll;
+    }
+
+    public void setOnScroll(boolean onScroll) {
+        this.onScroll = onScroll;
     }
 }

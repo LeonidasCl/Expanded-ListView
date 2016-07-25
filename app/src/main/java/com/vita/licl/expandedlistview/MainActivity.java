@@ -1,15 +1,20 @@
 package com.vita.licl.expandedlistview;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,7 +34,7 @@ public class MainActivity extends AppCompatActivity implements OnListRefreshList
     ExpandListView listView;
     ExpandAdapter listAdapter;
     List<ListItemA> list;
-    String testURL="http://img.25pp.com/uploadfile/youxi/images/2014/0415/20140415084756534.jpg";
+    String testURL="http://y3.ifengimg.com/dee5ac7c19652025/2015/0825/rdn_55dc0f3d3a337.jpg";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +54,7 @@ public class MainActivity extends AppCompatActivity implements OnListRefreshList
             item.setTitle("title " + (i + 1));
             item.setSubtitle("subtitlesubtitle");
             item.setContent("Content Content Content Content Content");
-            item.setMainbg(BitmapFactory.decodeResource(getResources(),R.drawable.mainbg));
+            //item.setMainbg(BitmapFactory.decodeResource(getResources(),R.drawable.mainbg));
             list.add(item);
         }
         return list;
@@ -90,19 +95,28 @@ public class MainActivity extends AppCompatActivity implements OnListRefreshList
     @Override
     public void onLoadingMore() {
         Toast.makeText(this,"上拉加载更多",Toast.LENGTH_SHORT).show();
+        for (int i=0;i<5;i++){
+            final ListItemA item=new ListItemA();
+            item.setTitle("added title "+(i+1));
+            item.setSubtitle("subtitlesubtitle");
+            item.setContent("Content refreshed Content refreshed Content refreshed");
+            item.setMainbgUrl(testURL);
+            list.add(item);
+        }
+
         listAdapter.finishLoading(listView);
     }
 
-    public class ViewHolderItemA extends ViewHolder{
+    public class ViewHolderItemA implements ViewHolder{
 
         TextView title;
         TextView subtitle;
         TextView content;
-        ImageButton mainbg;
+        ImageView mainbg;
 
         @Override
         public void setViewHolder(View view) {
-            mainbg=(ImageButton)view.findViewById(R.id.mainbg);
+            mainbg=(ImageView)view.findViewById(R.id.mainbg);
             title = (TextView) view.findViewById(R.id.title);
             subtitle = (TextView) view.findViewById(R.id.subtitle);
             content = (TextView) view.findViewById(R.id.content);
@@ -111,19 +125,21 @@ public class MainActivity extends AppCompatActivity implements OnListRefreshList
 
     public class MyAdapter extends ExpandAdapter<ListItemA> {
 
-        ViewHolderItemA holder;
-
         public MyAdapter(Context ctxt, List<ListItemA> lst) {
             super(ctxt, lst);
         }
 
         @Override
         protected void getItemView(View view, ViewHolder viewHolder,final ListItemA item) {
+            final ViewHolderItemA holder=(ViewHolderItemA)viewHolder;
             holder.title.setText(item.getTitle());
             holder.subtitle.setText(item.getSubtitle());
             holder.content.setText(item.getContent());
-            if (item.getMainbg()!=null){
-            holder.mainbg.setImageDrawable(new BitmapDrawable(holder.mainbg.getResources(), item.getMainbg()));
+            if (item.getMainbgUrl()==null||(listView.isOnScroll())){
+                if (listView.isOnScroll()){
+                holder.title.setText("fakedata");
+                holder.subtitle.setText("fakedata");
+                holder.content.setText("fakedata");}
             }else {
             new AsyncTask<String, Void, Bitmap>() {
             @Override
@@ -143,8 +159,7 @@ public class MainActivity extends AppCompatActivity implements OnListRefreshList
 
         @Override
         protected ViewHolder getViewHolder() {
-            holder=new ViewHolderItemA();
-            return holder;
+            return new ViewHolderItemA();
         }
     }
 }

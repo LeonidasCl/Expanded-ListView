@@ -56,10 +56,6 @@ public abstract class ExpandAdapter<T> extends BaseAdapter {
         }
 
         viewHolder = (ViewHolder)view.getTag();
-
-       // ListItemA person = getItem(i);
-     //   viewHolder.setValues(person);
-
         getItemView(view,viewHolder,getItem(i));
 
         return view;
@@ -76,5 +72,4 @@ public abstract class ExpandAdapter<T> extends BaseAdapter {
                 listview.hideFooterView();
         }
     }
-
 }
