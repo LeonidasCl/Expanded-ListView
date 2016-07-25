@@ -1,5 +1,6 @@
 package com.vita.licl.expandedlistview.Data;
 
+import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 
 /**
@@ -11,6 +12,8 @@ public class ListItemA extends BaseListItem{
     private String subtitle;
     private String content;
     private Drawable avatar;
+    private String mainbgUrl;
+    private Bitmap mainbg;
 
     public Drawable getAvatar() {
         return avatar;
@@ -42,5 +45,21 @@ public class ListItemA extends BaseListItem{
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public Bitmap getMainbg() {
+        return mainbg;
+    }
+
+    public void setMainbg(Bitmap mainbg) {
+        this.mainbg = mainbg;
+    }
+
+    public String getMainbgUrl() {
+        return mainbgUrl;
+    }
+
+    public void setMainbgUrl(String mainbgUrl) {
+        this.mainbgUrl = mainbgUrl;
     }
 }

@@ -52,6 +52,7 @@ public abstract class ExpandAdapter<T> extends BaseAdapter {
             getItemView(view, viewHolder,getItem(i));
             //viewHolder = new ViewHolder();
             view.setTag(viewHolder);
+            return view;
         }
 
         viewHolder = (ViewHolder)view.getTag();
